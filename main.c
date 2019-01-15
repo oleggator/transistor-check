@@ -84,7 +84,7 @@ void setupDAC(void) {
                | DAC12ENC;
     DAC12_0DAT = DAC0_V * (4096. / DAC_V_REF);
 
-//     dac1 DAC12.1
+    // dac1 DAC12.1
     DAC12_1CTL = DAC12IR
                | DAC12AMP_5
                | DAC12ENC;
@@ -102,35 +102,33 @@ void setupADC(void) {
     ADC12CTL1 |= CONSEQ_1
               | SHP;   // multichannel
 
-    // A0 | 6.0
+    // A0
     P6SEL |= BIT0;
     ADC12MCTL0 |= INCH_0;
 
-    // A1 | 6.1
+    // A1
     P6SEL |= BIT1;
     OA0CTL0 |= OAPM_0;
     ADC12MCTL1 |= INCH_1;
 
-    // A2 | 6.2
+    // A2
     P6SEL |= BIT2;
     ADC12MCTL2 |= INCH_2;
 
-    // A3 | 6.3
-    P5SEL |= BIT3;
+    // A3
+    P6SEL |= BIT3;
     ADC12MCTL3 |= INCH_3;
 
-    // A4 | 6.4
-    P5SEL |= BIT4;
+    // A4
+    P6SEL |= BIT4;
     ADC12MCTL4 |= INCH_4;
 
-    // A5 | 6.5
-    P10SEL |= BIT5;
+    // A5
+    P6SEL |= BIT5;
     ADC12MCTL5 |= INCH_5
                | EOS;
 
 
-    OA0CTL0 = 0;
-    OA0CTL1 = 0;
     ADC12CTL0 |= ENC;
     ADC12IE = BIT5;
 }
@@ -156,8 +154,8 @@ void setupPorts() {
 
 #pragma vector=ADC12_VECTOR
 __interrupt void ADC12ISR(void) {
-    vt1_e_v_sum += VCC - ADC12MEM3 * (VCC / 4095.);
-    vt1_b_v_sum += ADC12MEM4 * (VCC / 4095.) - DAC0_V;
+    vt1_e_v_sum += VCC - ADC12MEM0 * (VCC / 4095.);
+    vt1_b_v_sum += ADC12MEM1 * (VCC / 4095.) - DAC0_V;
     vt1_k_v_sum += ADC12MEM2 * (VCC / 4095.);
 
     vt2_k_v_sum += VCC - ADC12MEM3 * (VCC / 4095.);
